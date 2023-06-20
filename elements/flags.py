@@ -68,7 +68,10 @@ class Flags:
       remaining.extend([key] + vals)
       return
     if not vals:
-      raise ValueError(f"Flag '{key}' was not followed by any values.")
+      if isinstance(self._config.flat[name], bool):
+        vals.append(True)
+      else:
+        raise ValueError(f"Flag '{key}' was not followed by any values.")
     for key in keys:
       parsed[key] = self._parse_flag_value(self._config[key], vals, key)
 
