@@ -44,11 +44,12 @@ class Ratio:
 
 class Once:
 
-  def __init__(self):
+  def __init__(self, when=0):
     self._once = True
+    self._when = when
 
-  def __call__(self):
-    if self._once:
+  def __call__(self, step):
+    if self._once and step >= self._when:
       self._once = False
       return True
     return False
