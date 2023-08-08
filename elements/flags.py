@@ -83,6 +83,8 @@ class Flags:
       return tuple(self._parse_flag_value(default[0], [x], key) for x in value)
     assert len(value) == 1, value
     value = str(value[0])
+    if value in (None, "None", "null"):
+      return None
     if default is None:
       return value
     if isinstance(default, bool):
