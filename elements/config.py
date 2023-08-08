@@ -122,6 +122,8 @@ class Config(dict):
             if float(int(new)) != new:
               message = f"Cannot convert fractional float {new} to int."
               raise ValueError(message)
+          if old is None:
+            old = new
           result[key] = type(old)(new)
         except (ValueError, TypeError):
           raise TypeError(
