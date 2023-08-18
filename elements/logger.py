@@ -173,9 +173,11 @@ class JSONLOutput(AsyncOutput):
         bystep[step][name] = value
       if isinstance(value, np.ndarray) and len(value.shape) == 0:
         bystep[step][name] = float(value)
+      if isinstance(value, np.ndarray) and len(value.shape) == 1:
+        bystep[step][name] = value.tolist()
     lines = ''.join([
-        json.dumps({'step': step, **scalars}) + '\n'
-        for step, scalars in bystep.items()])
+        json.dumps({'step': step, **values}) + '\n'
+        for step, values in bystep.items()])
     with (self._logdir / self._filename).open('a') as f:
       f.write(lines)
 
