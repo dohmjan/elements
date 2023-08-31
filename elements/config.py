@@ -134,6 +134,21 @@ class Config(dict):
               f"for key '{key}' with previous value '{old}'.")
     return type(self)(result)
 
+  def remove(self, key):
+    result = self._flat.copy()
+    result_nested = self._nested.copy()
+    if self.IS_PATTERN.match(key):
+      pattern = re.compile(key)
+      keys = {k for k in result if pattern.match(k)}
+      for key in keys:
+        _ = result.pop(key)
+      return type(self)(result)
+    elif key in result_nested:
+      _ = result_nested.pop(key)
+      return type(self)(result_nested)
+    else:
+      raise KeyError(f'Unknown key or pattern {key}.')
+
   def _flatten(self, mapping):
     result = {}
     for key, value in mapping.items():
